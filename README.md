@@ -9,16 +9,18 @@ mongo_query.js - auth and query for mongo, needed by nagios_check_timeout.sh
 
 
 Example:
-
+---
 define command{
         command_name    check_timeout_sphinx
         command_line    /scripts/check_timeout.sh sphinx $HOSTNAME$
         }
 
-
+---
+---
 define service{
         use                             local-service         ; Name of service template to use
         host_name                       host1
         service_description             Sphinx query timeout
         check_command                   check_timeout_sphinx
         }
+---
