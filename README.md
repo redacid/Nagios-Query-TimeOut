@@ -12,7 +12,7 @@ Example:
 ```
 define command{
         command_name    check_timeout_sphinx
-        command_line    /scripts/check_timeout.sh sphinx $HOSTNAME$
+        command_line    /scripts/nagios_check_timeout.sh sphinx $HOSTNAME$
         }
 
 
