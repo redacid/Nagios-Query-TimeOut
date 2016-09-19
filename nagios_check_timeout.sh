@@ -11,6 +11,7 @@ tcp='/usr/lib/nagios/plugins/check_tcp'
 http='/usr/lib/nagios/plugins/check_http'
 mongo='/usr/bin/mongo'
 mysql='/usr/bin/mysql'
+sphinx='/usr/lib/nagios/plugins/check_sphinxsearch_query'
 
 mysql_user='nagios'
 mysql_pass='password'
@@ -65,5 +66,26 @@ case "$1" in
 
                 fi
         ;;
+        "sphinx")
+                start=$((`date +%s` * 100 + (10#`date +%N` / 10000000)))
+                sresult=`$sphinx --host=$2 -q why -w 500000 -c 100 | grep "Failed to open" | wc -l`
+                #echo $sresult
+                if [ "$sresult" -eq 1 ]; then
+                        echo "Critical - Failed to open connection:"
+                        exit $STATE_CRITICAL
+                fi
+                #$sphinx --host=$2 -q why -w 500000 -c 100  > /dev/null
+                end=$((`date +%s` * 100 + (10#`date +%N` / 10000000)))
+                duration=$(( $end - $start ))
+                #echo $duration
 
+                if [ "$duration" -gt 300 ]; then
+                        echo "Critical - timeout:${duration}ms"
+                        exit $STATE_CRITICAL
+                else
+                        echo "OK - timeout:${duration}ms"
+                        exit $STATE_OK
+
+                fi
+        ;;
 esac
