@@ -15,10 +15,10 @@ define command{
         command_line    /scripts/check_timeout.sh sphinx $HOSTNAME$
         }
 
----
----
+
+
 define service{
-        use                             local-service         ; Name of service template to use
+        use                             local-service
         host_name                       host1
         service_description             Sphinx query timeout
         check_command                   check_timeout_sphinx
